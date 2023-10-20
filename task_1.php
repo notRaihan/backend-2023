@@ -35,6 +35,11 @@ class Animal
     # parameter: index dan hewan baru
     public function update($index, $data)
     {
+        if (!isset($this->animals[$index]))
+        {
+            throw new Exception('Index not found');
+        }
+
         $this->animals[$index] = $data;
     }
 

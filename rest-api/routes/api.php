@@ -54,5 +54,5 @@ Route::get('/students/{id}',[StudentController::class,'show']);
 
 
 //Auth Routes
-Route::post('/auth/register', [AuthController::class, 'createUser'])->name('register');
-Route::post('/auth/login', [AuthController::class, 'loginUser'])->name('login');
+Route::post('/auth/register', [AuthController::class, 'register'])->name('register');
+Route::post('/auth/login', [AuthController::class, 'login'])->name('login');

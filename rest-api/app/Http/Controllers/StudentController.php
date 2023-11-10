@@ -59,6 +59,13 @@ class StudentController extends Controller
     {
         $statusCode = 201;
 
+        $input = [
+            'nama' => $request->nama,
+            'nim' => $request->nim,
+            'email' => $request->email,
+            'jurusan' => $request->jurusan
+        ];
+
         $messages = [
             'nama.required' => 'Nama harus diisi',
             'nim.required' => 'NIM harus diisi',
@@ -67,7 +74,7 @@ class StudentController extends Controller
             'jurusan.required' => 'Jurusan harus diisi'
         ];
 
-        $validator = Validator::make($request->all(), [
+        $validator = Validator::make($input, [
             'nama' => 'required',
             'nim' => 'required',
             'email' => 'required|email',

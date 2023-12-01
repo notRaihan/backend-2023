@@ -15,7 +15,7 @@ const fruits = require("../data/fruits");
  */
 const index = () => {
     for (let fruit of fruits) {
-        console.log(fruit);
+        console.log(`- ${fruit}`);
     }
 };
 
@@ -31,6 +31,7 @@ const index = () => {
  */
 const store = (name) => {
     fruits.push(name);
+    index();
 };
 
 /**
@@ -44,6 +45,7 @@ const store = (name) => {
  */
 const update = (position, name) => {
     fruits[position] = name;
+    index();
 };
 
 /**
@@ -58,6 +60,7 @@ const update = (position, name) => {
  */
 const destroy = (position) => {
     fruits.splice(position, 1);
+    index();
 };
 
 /**

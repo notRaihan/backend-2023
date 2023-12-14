@@ -17,7 +17,7 @@ const showDownload = (result) => {
 const download = (callShowDownload) => {
     return new Promise((resolve) => {
         setTimeout(function () {
-            resolve(callShowDownload("windows-10.exe"));
+            resolve(callShowDownload("macbook-m1.dmg"));
         }, 3000);
     });
 };

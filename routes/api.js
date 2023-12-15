@@ -9,6 +9,7 @@ router.get("/", (req, res) => {
     res.send("Hello World from Express");
 });
 
+// students routes
 router.get("/students", StudentController.index);
 
 router.post("/students", StudentController.store);

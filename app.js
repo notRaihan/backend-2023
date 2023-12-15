@@ -6,6 +6,10 @@ const app = express();
 // import routes
 const webRoutes = require("./routes/api");
 
+// use middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
 // use routes
 app.use("/", webRoutes);
 

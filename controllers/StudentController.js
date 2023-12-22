@@ -1,33 +1,54 @@
-// TODO 3: Import data students dari folder data/students.js
-const students = require("../data/students");
+// import model Student
+const Student = require("../models/Student");
 
 // Membuat Class StudentController
 class StudentController {
-    index(req, res) {
-        // TODO 4: Tampilkan data students
-        const data = {
-            message: "Show All data students",
-            students: students,
-        };
+    async index(req, res) {
+        try {
+            const students = await Student.all();
+            const data = {
+                message: "Show All data students",
+                students: students,
+            };
 
-        res.json(data);
+            res.json(data);
+        } catch (error) {
+            console.log(error);
+            res.json({
+                message: error.sqlMessage,
+            });
+        }
     }
 
-    store(req, res) {
-        // TODO 5: Tambahkan data students
-        const data = {
-            message: "Create data students",
-            students: students,
+    async store(req, res) {
+        /**
+         * TODO 2: memanggil method create.
+         * Method create mengembalikan data yang baru diinsert.
+         * Mengembalikan response dalam bentuk json.
+         */
+
+        const { nama, nim, email, jurusan } = req.body;
+        const dataReq = {
+            nama: nama,
+            nim: nim,
+            email: email,
+            jurusan: jurusan,
         };
 
-        const { name } = req.body;
+        try {
+            await Student.create(dataReq);
+            const data = {
+                message: "Add new data students",
+                students: [dataReq],
+            };
 
-        students.push({
-            id: students.length + 1,
-            name: name,
-        });
-
-        res.json(data);
+            res.json(data);
+        } catch (error) {
+            console.log(error);
+            res.json({
+                message: error.sqlMessage,
+            });
+        }
     }
 
     update(req, res) {

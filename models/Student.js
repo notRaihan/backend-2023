@@ -23,14 +23,26 @@ class Student {
      * Method menerima parameter data yang akan diinsert.
      * Method mengembalikan data student yang baru diinsert.
      */
-    static create(data) {
-        return new Promise((resolve, reject) => {
-            // add created_at and updated_at
-            data.created_at = new Date();
-            data.updated_at = new Date();
+    static async create(data) {
+        // insert to database
+        const insertToDatabase = await new Promise((resolve, reject) => {
             const query = "INSERT INTO students SET ?";
 
+            // set created_at and updated_at to current time
+            data.created_at = new Date();
+            data.updated_at = new Date();
+
             db.query(query, data, (err, results) => {
+                if (err) reject(err);
+                resolve(results);
+            });
+        });
+
+        // get data student yang baru diinsert
+        return new Promise((resolve, reject) => {
+            const query = "SELECT * FROM students WHERE id = ?";
+
+            db.query(query, insertToDatabase.insertId, (err, results) => {
                 if (err) reject(err);
                 resolve(results);
             });

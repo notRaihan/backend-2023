@@ -21,28 +21,15 @@ class StudentController {
     }
 
     async store(req, res) {
-        /**
-         * TODO 2: memanggil method create.
-         * Method create mengembalikan data yang baru diinsert.
-         * Mengembalikan response dalam bentuk json.
-         */
-
-        const { nama, nim, email, jurusan } = req.body;
-        const dataReq = {
-            nama: nama,
-            nim: nim,
-            email: email,
-            jurusan: jurusan,
-        };
-
         try {
-            await Student.create(dataReq);
-            const data = {
-                message: "Add new data students",
-                students: [dataReq],
+            const data = req.body;
+            const student = await Student.create(data);
+            const result = {
+                message: "Insert data students",
+                student: student,
             };
 
-            res.json(data);
+            res.json(result);
         } catch (error) {
             console.log(error);
             res.json({

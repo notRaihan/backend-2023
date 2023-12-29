@@ -6,12 +6,12 @@ class StudentController {
     async index(req, res) {
         try {
             const students = await Student.all();
-            const data = {
+            const result = {
                 message: "Show All data students",
                 students: students,
             };
 
-            res.json(data);
+            res.json(result);
         } catch (error) {
             console.log(error);
             res.json({
@@ -66,7 +66,7 @@ class StudentController {
         }
     }
 
-    destroy(req, res) {
+    async destroy(req, res) {
         const { id } = req.params;
 
         // check if student exists
@@ -91,6 +91,25 @@ class StudentController {
                 message: error.sqlMessage,
             });
         }
+    }
+
+    async show(req, res) {
+        const { id } = req.params;
+
+        const student = await Student.find(id);
+
+        if (!student) {
+            return res.status(404).json({
+                message: "Student not found",
+            });
+        }
+
+        const result = {
+            message: "Show data student",
+            student: student,
+        };
+
+        res.json(result);
     }
 }
 

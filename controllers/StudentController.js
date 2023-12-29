@@ -38,41 +38,59 @@ class StudentController {
         }
     }
 
-    update(req, res) {
-        // TODO 6: Update data students
-        const data = {
-            message: "Update data students",
-            students: students,
-        };
-
+    async update(req, res) {
         const { id } = req.params;
-        const { name } = req.body;
 
-        students.forEach((student) => {
-            if (student.id == id) {
-                student.name = name;
-            }
-        });
+        // check if student exists
+        const student = await Student.find(id);
+        if (!student) {
+            return res.status(404).json({
+                message: "Student not found",
+            });
+        }
 
-        res.json(data);
+        try {
+            const data = req.body;
+            const student = await Student.update(id, data);
+            const result = {
+                message: "Update data students",
+                student: student,
+            };
+
+            res.json(result);
+        } catch (error) {
+            console.log(error);
+            res.json({
+                message: error.sqlMessage,
+            });
+        }
     }
 
     destroy(req, res) {
-        // TODO 7: Hapus data students
-        const data = {
-            message: "Delete data students",
-            students: students,
-        };
-
         const { id } = req.params;
 
-        students.forEach((student, index) => {
-            if (student.id == id) {
-                students.splice(index, 1);
-            }
-        });
+        // check if student exists
+        const student = Student.find(id);
+        if (!student) {
+            return res.status(404).json({
+                message: "Student not found",
+            });
+        }
 
-        res.json(data);
+        try {
+            Student.destroy(id);
+            const result = {
+                message: "Delete data students",
+                student: student,
+            };
+
+            res.json(result);
+        } catch (error) {
+            console.log(error);
+            res.json({
+                message: error.sqlMessage,
+            });
+        }
     }
 }
 

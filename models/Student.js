@@ -18,11 +18,22 @@ class Student {
         });
     }
 
-    /**
-     * TODO 1: Buat fungsi untuk insert data.
-     * Method menerima parameter data yang akan diinsert.
-     * Method mengembalikan data student yang baru diinsert.
-     */
+    /*
+        Membuat method untuk menampilkan satu data student
+        Method ini menerima parameter berupa callback function
+    */
+    static find(id) {
+        return new Promise((resolve, reject) => {
+            const query = "SELECT * FROM students WHERE id = ?";
+
+            db.query(query, id, (err, results) => {
+                if (err) reject(err);
+
+                resolve(results[0]);
+            });
+        });
+    }
+
     static async create(data) {
         // insert to database
         const insertToDatabase = await new Promise((resolve, reject) => {
@@ -39,14 +50,39 @@ class Student {
         });
 
         // get data student yang baru diinsert
-        return new Promise((resolve, reject) => {
-            const query = "SELECT * FROM students WHERE id = ?";
+        return await Student.find(insertToDatabase.insertId);
+    }
 
-            db.query(query, insertToDatabase.insertId, (err, results) => {
+    static async update(id, data) {
+        // update to database
+        const updateToDatabase = await new Promise((resolve, reject) => {
+            const query = "UPDATE students SET ? WHERE id = ?";
+
+            // set updated_at to current time
+            data.updated_at = new Date();
+
+            db.query(query, [data, id], (err, results) => {
                 if (err) reject(err);
                 resolve(results);
             });
         });
+        // get data student yang baru diupdate
+        return await Student.find(id);
+    }
+
+    static async destroy(id) {
+        // delete to database
+        const deleteToDatabase = await new Promise((resolve, reject) => {
+            const query = "DELETE FROM students WHERE id = ?";
+
+            db.query(query, id, (err, results) => {
+                if (err) reject(err);
+                resolve(results);
+            });
+        });
+
+        // get data student yang baru diupdate
+        return await Student.find(id);
     }
 }
 
